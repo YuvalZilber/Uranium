@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 from typing import Optional, Union, Dict, List
 
@@ -23,7 +23,7 @@ class Message(QObject):
         ALIGN_RIGHT = 3
 
     def __init__(self, text: str = "", lifetime: int = 30, dismissable: bool = True, progress: float = None,
-                 title: Optional[str] = None, parent=None, use_inactivity_timer: bool = True, image_source: str = "",
+                 title: Optional[str] = None, parent: Optional[QObject] = None, use_inactivity_timer: bool = True, image_source: str = "",
                  image_caption: str = "", option_text: str = "", option_state: bool = True) -> None:
 
         """Class for displaying messages to the user.
@@ -47,10 +47,12 @@ class Message(QObject):
         :param progress: Is there any progress to be displayed? if -1, it's seen
         as indeterminate.
         """
-
-        super().__init__(parent)
         from UM.Application import Application
         self._application = Application.getInstance()
+        if parent is None:
+            parent = self._application
+        super().__init__(parent)
+
         self._visible = False
         self._text = text.replace("\n", "<br>")
         self._progress = progress  # If progress is set to -1, the progress is seen as indeterminate

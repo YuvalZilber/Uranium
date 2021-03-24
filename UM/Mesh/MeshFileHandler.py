@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -8,7 +8,7 @@ from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.FileHandler.FileHandler import FileHandler
-from typing import TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from UM.Qt.QtApplication import QtApplication
 
@@ -19,7 +19,7 @@ class MeshFileHandler(FileHandler):
     This class is created by Application and handles reading and writing mesh files.
     """
 
-    def __init__(self, application: "QtApplication", writer_type: str = "mesh_writer", reader_type: str = "mesh_reader", parent: QObject = None) -> None:
+    def __init__(self, application: "QtApplication", writer_type: str = "mesh_writer", reader_type: str = "mesh_reader", parent: Optional[QObject] = None) -> None:
         super().__init__(application, writer_type, reader_type, parent)
 
     def readerRead(self, reader, file_name, **kwargs):

@@ -1,7 +1,7 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
-from typing import Union, Dict
 
+from typing import Dict, Optional, Union
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, QUrl
 
 from UM.PluginObject import PluginObject
@@ -16,7 +16,7 @@ class Stage(QObject, PluginObject):
 
     iconSourceChanged = pyqtSignal()
 
-    def __init__(self, parent = None) -> None:
+    def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
         self._components = {}  # type: Dict[str, QUrl]
         self._icon_source = QUrl()

@@ -18,9 +18,9 @@ class FileProvider(PluginObject, QObject):
     """Signal which informs whether the file provider has been enabled or disabled, so that it can be removed or added
     in the Open File(s) submenu"""
 
-    def __init__(self) -> None:
+    def __init__(self, parent: Optional[QObject] = None) -> None:
         PluginObject.__init__(self)
-        QObject.__init__(self)
+        QObject.__init__(self, parent)
 
         self.menu_item_display_text = None  # type: Optional[str]
         """

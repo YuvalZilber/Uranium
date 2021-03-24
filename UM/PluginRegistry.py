@@ -46,7 +46,7 @@ class PluginRegistry(QObject):
     [plugins]: docs/plugins.md
     """
 
-    def __init__(self, application: "Application", parent: QObject = None) -> None:
+    def __init__(self, application: "Application", parent: Optional[QObject] = None) -> None:
         if PluginRegistry.__instance is not None:
             raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
         PluginRegistry.__instance = self

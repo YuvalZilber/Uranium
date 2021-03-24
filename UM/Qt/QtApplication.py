@@ -148,8 +148,8 @@ class QtApplication(QApplication, Application):
         # Initialize the package manager to remove and install scheduled packages.
         self._package_manager = self._package_manager_class(self, parent = self)
 
-        self._mesh_file_handler = MeshFileHandler(self) #type: MeshFileHandler
-        self._workspace_file_handler = WorkspaceFileHandler(self) #type: WorkspaceFileHandler
+        self._mesh_file_handler = MeshFileHandler(self, parent = self) #type: MeshFileHandler
+        self._workspace_file_handler = WorkspaceFileHandler(self, parent = self) #type: WorkspaceFileHandler
 
         # Remove this and you will get Windows 95 style for all widgets if you are using Qt 5.10+
         self.setStyle("fusion")
