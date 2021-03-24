@@ -23,7 +23,7 @@ class ActiveToolProxy(QObject):
         self._onActiveToolChanged()
 
 
-        self._properties_proxy = ContainerProxy.ContainerProxy(self._properties)
+        self._properties_proxy = ContainerProxy.ContainerProxy(self._properties, parent = self)
 
     activeToolChanged = pyqtSignal()
 
@@ -122,4 +122,4 @@ class ActiveToolProxy(QObject):
         self.propertiesChanged.emit()
 
 def createActiveToolProxy(engine, script_engine):
-    return ActiveToolProxy()
+    return ActiveToolProxy(parent = Application.getInstance())

@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
@@ -22,7 +22,7 @@ catalog = i18nCatalog("uranium")
 
 
 class OutputDeviceManagerProxy(QObject):
-    def __init__(self, parent = None) -> None:
+    def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
         self._device_manager = Application.getInstance().getOutputDeviceManager() #type: OutputDeviceManager
         self._device_manager.activeDeviceChanged.connect(self._onActiveDeviceChanged)
@@ -162,4 +162,5 @@ class OutputDeviceManagerProxy(QObject):
 
 
 def createOutputDeviceManagerProxy(engine: "QQmlEngine", script_engine: "QJSEngine") -> OutputDeviceManagerProxy:
-    return OutputDeviceManagerProxy()
+    from UM.Qt.QtApplication import QtApplication  # Imported here to prevent circular dependency.
+    return OutputDeviceManagerProxy(QtApplication.getInstance())

@@ -1,5 +1,6 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional, List, Set, Any
 
 from PyQt5.QtCore import QObject, QTimer, pyqtProperty, pyqtSignal
@@ -30,7 +31,7 @@ class SettingPropertyProvider(QObject):
     are available from QML.
     """
 
-    def __init__(self, parent = None) -> None:
+    def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent = parent)
 
         self._property_map = QQmlPropertyMap(self)

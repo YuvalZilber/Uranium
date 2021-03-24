@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
-from UM.Application import Application
+from UM.Qt.QtApplication import QtApplication
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.i18n import i18nCatalog
 from .LocalFileOutputDevice import LocalFileOutputDevice
@@ -15,11 +15,11 @@ class LocalFileOutputDevicePlugin(OutputDevicePlugin):
     def __init__(self):
         super().__init__()
 
-        Application.getInstance().getPreferences().addPreference("local_file/last_used_type", "")
-        Application.getInstance().getPreferences().addPreference("local_file/dialog_save_path", "")
+        QtApplication.getInstance().getPreferences().addPreference("local_file/last_used_type", "")
+        QtApplication.getInstance().getPreferences().addPreference("local_file/dialog_save_path", "")
 
     def start(self):
-        self.getOutputDeviceManager().addProjectOutputDevice(LocalFileOutputDevice(add_to_output_devices = True))
+        self.getOutputDeviceManager().addProjectOutputDevice(LocalFileOutputDevice(add_to_output_devices = True, parent = QtApplication.getInstance()))
 
     def stop(self):
         self.getOutputDeviceManager().removeProjectOutputDevice("local_file")

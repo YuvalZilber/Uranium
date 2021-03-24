@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -10,14 +10,14 @@ from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QCoreApplication, QU
 from PyQt5.QtGui import QColor, QFont, QFontMetrics, QFontDatabase
 from PyQt5.QtQml import QQmlComponent, QQmlContext
 
-import UM.Application
+import UM.Qt.QtApplication
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
 from UM.Resources import Resources
 
 
 class Theme(QObject):
-    def __init__(self, engine, parent = None) -> None:
+    def __init__(self, engine, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
 
         self._engine = engine
@@ -53,7 +53,7 @@ class Theme(QObject):
         self._path = ""
         self._icons = {}
         self._images = {}
-        application = UM.Application.Application.getInstance()
+        application = UM.Qt.QtApplication.QtApplication.getInstance()
         application.getPreferences().addPreference("general/theme", application.default_theme)
         try:
             theme_path = Resources.getPath(Resources.Themes, application.getPreferences().getValue("general/theme"))
@@ -272,7 +272,7 @@ class Theme(QObject):
 
         # Note: Explicit use of class name to prevent issues with inheritance.
         if Theme.__instance is None:
-            Theme.__instance = cls(engine)
+            Theme.__instance = cls(engine, parent = UM.Qt.QtApplication.QtApplication.getInstance())
         return Theme.__instance
 
     __instance = None   # type: "Theme"

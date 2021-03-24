@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
@@ -29,4 +29,5 @@ class PreferencesProxy(QObject):
         self.preferenceChanged.emit(preference)
 
 def createPreferencesProxy(engine, script_engine):
-    return PreferencesProxy()
+    from UM.Qt.QtApplication import QtApplication
+    return PreferencesProxy(parent = QtApplication.getInstance())

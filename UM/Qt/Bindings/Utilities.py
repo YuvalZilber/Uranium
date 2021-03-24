@@ -1,6 +1,7 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
-from typing import List, TYPE_CHECKING
+
+from typing import List, Optional, TYPE_CHECKING
 from urllib.parse import urlparse
 
 from PyQt5.QtCore import pyqtSlot, QUrl, QObject
@@ -18,7 +19,7 @@ class UrlUtil(QObject):
     """
     __valid_uri_schemes = ("http", "https")  # Schemes considered valid to be used when calling the custom openUrl
 
-    def __init__(self, parent = None):
+    def __init__(self, parent: Optional[QObject] = None):
         super().__init__(parent)
 
     @pyqtSlot(str, list, result = bool)
@@ -69,4 +70,5 @@ def createUrlUtil(engine: "QQmlEngine", script_engine: "QJSEngine") -> UrlUtil:
     """
     Function used by the Qt bindings to instantiate the UrlUtil class.
     """
-    return UrlUtil()
+    from UM.Qt.QtApplication import QtApplication  # Imported here to prevent circular dependency.
+    return UrlUtil(QtApplication.getInstance())

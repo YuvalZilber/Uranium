@@ -1,10 +1,11 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, QVariant, pyqtProperty, pyqtSignal
+from typing import Optional
+
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
-
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingDefinition import SettingDefinition
@@ -18,7 +19,7 @@ class ContainerPropertyProvider(QObject):
     are available from QML.
     """
 
-    def __init__(self, parent = None):
+    def __init__(self, parent: Optional[QObject] = None):
         super().__init__(parent = parent)
 
         self._container_id = ""

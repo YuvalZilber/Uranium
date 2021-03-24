@@ -1,16 +1,16 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
 import inspect
-
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, QCoreApplication, pyqtSlot
 from PyQt5.QtQml import QJSValue
+from typing import Optional
 
 from UM.i18n import i18nCatalog
 
 
 class i18nCatalogProxy(QObject): # [CodeStyle: Ultimaker code style requires classes to start with a upper case. But i18n is lower case by convention.]
-    def __init__(self, parent = None):
+    def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
 
         self._name = None

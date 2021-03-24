@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
@@ -13,6 +13,11 @@ i18n_catalog = i18nCatalog("uranium")
 
 
 class DurationFormat(QObject):
+    """
+    Several options to display the format in.
+
+    This class is intended to be used as an enum, both from Python and QML. It can't be constructed.
+    """
     class Format:
         Seconds = 0
         Short = 1
@@ -20,6 +25,8 @@ class DurationFormat(QObject):
         ISO8601 = 3
     Q_ENUMS(Format)
 
+    def __init__(self):
+        raise RuntimeError("Don't construct a DurationFormat object. Just use its fields.")
 
 class Duration(QObject):
     """A class representing a time duration.
@@ -29,7 +36,7 @@ class Duration(QObject):
     in the QML.
     """
 
-    def __init__(self, duration: Optional[int] = None, parent = None) -> None:
+    def __init__(self, duration: Optional[int] = None, parent: Optional[QObject] = None) -> None:
         """Create a duration object.
 
         :param duration: The duration in seconds. If this is None (the default), an invalid Duration object will be created.

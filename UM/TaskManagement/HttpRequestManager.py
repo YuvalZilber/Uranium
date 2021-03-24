@@ -285,7 +285,8 @@ class HttpRequestManager(TaskManager):
                                        error_callback = error_callback,
                                        download_progress_callback = download_progress_callback,
                                        upload_progress_callback = upload_progress_callback,
-                                       timeout = timeout)
+                                       timeout = timeout,
+                                       parent = self)
 
         with self._request_lock:
             self._request_queue.append(request_data)

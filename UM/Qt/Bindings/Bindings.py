@@ -1,8 +1,9 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtQml import qmlRegisterType, qmlRegisterSingletonType, qmlRegisterUncreatableType
 
+from UM.Application import Application
 from UM.Qt.Bindings import StageModel, FileProviderModel, ProjectOutputDevicesModel
 from UM.Qt.Duration import Duration, DurationFormat
 
@@ -41,7 +42,7 @@ from UM.Settings.Models.ContainerPropertyProvider import ContainerPropertyProvid
 class Bindings:
     @classmethod
     def createControllerProxy(self, engine, script_engine):
-        return ControllerProxy.ControllerProxy()
+        return ControllerProxy.ControllerProxy(parent = Application.getInstance())
 
     @classmethod
     def createApplicationProxy(self, engine, script_engine):
@@ -49,19 +50,19 @@ class Bindings:
 
     @classmethod
     def createBackendProxy(self, engine, script_engine):
-        return BackendProxy.BackendProxy()
+        return BackendProxy.BackendProxy(parent = Application.getInstance())
 
     @classmethod
     def createResourcesProxy(cls, engine, script_engine):
-        return ResourcesProxy.ResourcesProxy()
+        return ResourcesProxy.ResourcesProxy(parent = Application.getInstance())
 
     @classmethod
     def createOperationStackProxy(cls, engine, script_engine):
-        return OperationStackProxy.OperationStackProxy()
+        return OperationStackProxy.OperationStackProxy(parent = Application.getInstance())
 
     @classmethod
     def createOpenGLContextProxy(cls, engine, script_engine):
-        return OpenGLContextProxy.OpenGLContextProxy()
+        return OpenGLContextProxy.OpenGLContextProxy(parent = Application.getInstance())
 
     @classmethod
     def register(self):

@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, Union, Dict, TYPE_CHECKING
@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 class View(QObject, PluginObject):
     """Abstract base class for view objects."""
-    def __init__(self, parent = None) -> None:
+    def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
         self._renderer = None  # type: Optional[Renderer]
         self._controller = UM.Application.Application.getInstance().getController()  # type: Controller

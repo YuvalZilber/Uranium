@@ -21,7 +21,7 @@ class ProjectOutputDevice(QObject, OutputDevice):
     """Signal which informs whether the project output device has been enabled or disabled, so that it can be added or removed 
      from the 'File->Save Project...' submenu"""
 
-    def __init__(self, device_id: str, add_to_output_devices: bool = False, parent = None, **kwargs):
+    def __init__(self, device_id: str, add_to_output_devices: bool = False, parent: Optional[QObject] = None, **kwargs):
         super().__init__(device_id = device_id, parent = parent)
 
         self._enabled = True
