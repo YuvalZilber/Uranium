@@ -497,8 +497,6 @@ class QtApplication(QApplication, Application):
         if self._tray_icon_widget:
             self._tray_icon_widget.deleteLater()
 
-        self.quit()
-
     def checkWindowMinimizedState(self) -> bool:
         if self._main_window is not None and self._main_window.windowState() == Qt.WindowMinimized:
             return True
