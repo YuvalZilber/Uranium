@@ -96,7 +96,7 @@ class QtApplication(QApplication, Application):
         # use Qt Quick Scene Graph "basic" render loop
         os.environ["QSG_RENDER_LOOP"] = "basic"
 
-        super().__init__(sys.argv, **kwargs) # type: ignore
+        super(QtApplication, self).__init__(sys.argv, **kwargs)
 
         self._qml_import_paths = [] #type: List[str]
         self._main_qml = "main.qml" #type: str
@@ -661,4 +661,3 @@ class _QtFunctionEvent(QEvent):
     def __init__(self, fevent: QEvent) -> None:
         super().__init__(self.QtFunctionEvent)
         self._function_event = fevent
-

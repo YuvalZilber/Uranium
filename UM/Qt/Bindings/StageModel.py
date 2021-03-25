@@ -1,5 +1,7 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
+from typing import Optional
+
 from PyQt5.QtCore import Qt
 
 from UM.Application import Application
@@ -17,8 +19,8 @@ class StageModel(ListModel):
     NameRole = Qt.UserRole + 2
     StageRole = Qt.UserRole + 4
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None):
+        super(StageModel, self).__init__(parent = parent)
         self._controller = Application.getInstance().getController()
         self._controller.stagesChanged.connect(self._onStagesChanged)
         self._onStagesChanged()

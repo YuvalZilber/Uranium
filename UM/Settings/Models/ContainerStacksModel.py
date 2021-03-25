@@ -1,5 +1,6 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from UM.Qt.ListModel import ListModel
 
@@ -17,8 +18,8 @@ class ContainerStacksModel(ListModel):
     IdRole = Qt.UserRole + 2
     MetaDataRole = Qt.UserRole + 3
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None):
+        super(ContainerStacksModel, self).__init__(parent = parent)
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.MetaDataRole, "metadata")

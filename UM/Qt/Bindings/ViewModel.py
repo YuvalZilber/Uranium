@@ -1,5 +1,6 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from PyQt5.QtCore import Qt
 
@@ -15,8 +16,8 @@ class ViewModel(ListModel):
     DescriptionRole = Qt.UserRole + 4
     IconRole = Qt.UserRole + 5
 
-    def __init__(self, parent = None) -> None:
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(ViewModel, self).__init__(parent = parent)
         self._controller = Application.getInstance().getController()
         self._controller.viewsChanged.connect(self._update)
         self._controller.activeViewChanged.connect(self._update)

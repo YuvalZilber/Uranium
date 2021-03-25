@@ -1,5 +1,6 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from PyQt5.QtCore import Qt
 from UM.FlameProfiler import pyqtSlot
@@ -13,8 +14,8 @@ class ExtensionModel(ListModel):
     ActionsRole = Qt.UserRole + 2
     ExtensionRole = Qt.UserRole + 3
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None):
+        super(ExtensionModel, self).__init__(parent = parent)
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.ActionsRole, "actions")
         self.addRoleName(self.ExtensionRole, "extension")
@@ -38,7 +39,7 @@ class ExtensionModel(ListModel):
                 })
 
     def createActionsModel(self, options):
-        model = ListModel()
+        model = ListModel(parent = self)
         model.addRoleName(self.NameRole, "text")
         for option in options:
             model.appendItem({"text": str(option)})

@@ -1,5 +1,6 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from PyQt5.QtCore import Qt
 
@@ -24,8 +25,8 @@ class VisibleMessagesModel(ListModel):
     OptionTextRole = Qt.UserRole + 13
     OptionStateRole = Qt.UserRole + 14
 
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None):
+        super(VisibleMessagesModel, self).__init__(parent = parent)
         Application.getInstance().visibleMessageAdded.connect(self.addMessage)
         Application.getInstance().visibleMessageRemoved.connect(self.removeMessage)
         self.addRoleName(self.TextRole, "text")
@@ -64,7 +65,7 @@ class VisibleMessagesModel(ListModel):
         message.progressChanged.connect(self._onMessageProgress)
 
     def createActionsModel(self, actions):
-        model = ListModel()
+        model = ListModel(parent = self)
         model.addRoleName(self.IDRole, "action_id")
         model.addRoleName(self.TextRole,"name")
         model.addRoleName(self.IconRole, "icon")

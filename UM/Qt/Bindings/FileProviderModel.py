@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 from typing import Callable, Optional
 
@@ -14,8 +14,8 @@ class FileProviderModel(ListModel):
     FileProviderRole = Qt.UserRole + 3
     ShortcutRole = Qt.UserRole + 4
 
-    def __init__(self, application = None, parent = None):
-        super().__init__(parent)
+    def __init__(self, application: Optional["Application"] = None):
+        super().__init__(parent = application)
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.DisplayTextRole, "displayText")
         self.addRoleName(self.FileProviderRole, "fileProvider")

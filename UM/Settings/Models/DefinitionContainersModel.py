@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
 from UM.Qt.ListModel import ListModel
@@ -7,7 +7,7 @@ from PyQt5.QtCore import pyqtProperty, Qt, pyqtSignal
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.DefinitionContainer import DefinitionContainer
-from typing import Dict
+from typing import Dict, Optional
 
 
 class DefinitionContainersModel(ListModel):
@@ -19,8 +19,8 @@ class DefinitionContainersModel(ListModel):
     IdRole = Qt.UserRole + 2            # Unique ID of Definition
     SectionRole = Qt.UserRole + 3       # Section of definition / machine. (string)
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None):
+        super(DefinitionContainersModel, self).__init__(parent = parent)
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.SectionRole, "section")

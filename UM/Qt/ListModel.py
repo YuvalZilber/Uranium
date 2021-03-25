@@ -1,8 +1,8 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QAbstractListModel, QVariant, QModelIndex, pyqtSlot, pyqtProperty, pyqtSignal
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict, List, Optional
 
 
 class ListModel(QAbstractListModel):
@@ -14,8 +14,8 @@ class ListModel(QAbstractListModel):
     used for limited writing.
     """
 
-    def __init__(self, parent = None) -> None:
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(ListModel, self).__init__(parent = parent)
         self._items = []  # type: List[Dict[str, Any]]
         self._role_names = {}  # type: Dict[int, bytes]
 

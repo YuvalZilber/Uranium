@@ -1,5 +1,6 @@
-# Copyright (c) 2020 Ultimaker B.V.
+# Copyright (c) 2021 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty, pyqtSignal
 
@@ -32,8 +33,8 @@ class OutputDevicesModel(ListModel):
     IconNameRole = Qt.UserRole + 5
     PriorityRole = Qt.UserRole + 6
 
-    def __init__(self, parent = None):
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None):
+        super(OutputDevicesModel, self).__init__(parent = parent)
         # Ensure that this model doesn't get garbage collected (Now the bound object is destroyed when the wrapper is)
         QQmlEngine.setObjectOwnership(self, QQmlEngine.CppOwnership)
         self._device_manager = Application.getInstance().getOutputDeviceManager()

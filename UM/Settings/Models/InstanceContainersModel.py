@@ -2,7 +2,7 @@
 # Uranium is released under the terms of the LGPLv3 or higher.
 
 import os
-from typing import Any, cast, Dict, Generator, List, Tuple
+from typing import Any, cast, Dict, Generator, List, Tuple, Optional
 from PyQt5.QtCore import pyqtProperty, Qt, pyqtSignal, pyqtSlot, QUrl, QTimer
 
 from UM.Qt.ListModel import ListModel
@@ -25,8 +25,8 @@ class InstanceContainersModel(ListModel):
     ReadOnlyRole = Qt.UserRole + 4
     SectionRole = Qt.UserRole + 5
 
-    def __init__(self, parent = None) -> None:
-        super().__init__(parent)
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
+        super(InstanceContainersModel, self).__init__(parent = parent)
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.MetaDataRole, "metadata")
