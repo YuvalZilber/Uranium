@@ -70,7 +70,7 @@ class LocalContainerProvider(ContainerProvider):
                 return container
 
         # Not cached, so load by deserialising.
-        container = container_class(base_id)
+        container = container_class(base_id, parent = Application.getInstance())
         with open(file_path, "r", encoding = "utf-8") as f:
             container.deserialize(f.read(), file_path)
         container.setPath(file_path)
