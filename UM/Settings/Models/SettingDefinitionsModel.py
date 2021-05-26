@@ -15,6 +15,7 @@ from UM.Settings import SettingRelation
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.Models.SettingPreferenceVisibilityHandler import SettingPreferenceVisibilityHandler
+from UM.Settings.SettingFunction import SettingFunction
 from UM.i18n import i18nCatalog
 from UM.Application import Application
 
@@ -37,8 +38,8 @@ class SettingDefinitionsModel(QAbstractListModel):
     VisibleRole = Qt.UserRole + 3
     ExpandedRole = Qt.UserRole + 4
 
-    def __init__(self, parent = None, *args, **kwargs):
-        super().__init__(parent = parent)
+    def __init__(self, parent=None, *args, **kwargs):
+        super().__init__(parent=parent)
 
         self._container_id = None  # type: Optional[str]
         self._container = None  # type: Optional[DefinitionContainerInterface]
@@ -48,7 +49,7 @@ class SettingDefinitionsModel(QAbstractListModel):
         self._root = None  # type: Optional[SettingDefinition]
 
         self._definition_list = []  # type: List[SettingDefinition]
-        self._index_cache = {} # type: Dict[SettingDefinition, int]
+        self._index_cache = {}  # type: Dict[SettingDefinition, int]
         self._row_index_list = []  # type: List[int]
 
         self._expanded = set()  # type: Set[str]
@@ -77,8 +78,6 @@ class SettingDefinitionsModel(QAbstractListModel):
 
         self.destroyed.connect(self._onDestroyed)
 
-        self.expandedChanged.connect(self._onExpandedChanged)
-
     showAncestorsChanged = pyqtSignal()
     """Emitted whenever the showAncestors property changes."""
 
@@ -106,7 +105,7 @@ class SettingDefinitionsModel(QAbstractListModel):
         if container_id != self._container_id:
             self._container_id = container_id
 
-            containers = ContainerRegistry.getInstance().findDefinitionContainers(id = self._container_id)
+            containers = ContainerRegistry.getInstance().findDefinitionContainers(id=self._container_id)
             if containers:
                 self._container = containers[0]
             else:
@@ -118,7 +117,7 @@ class SettingDefinitionsModel(QAbstractListModel):
     containerIdChanged = pyqtSignal()
     """Emitted whenever the containerId property changes."""
 
-    @pyqtProperty(str, fset = setContainerId, notify = containerIdChanged)
+    @pyqtProperty(str, fset=setContainerId, notify=containerIdChanged)
     def containerId(self) -> Optional[str]:
         """The ID of the DefinitionContainer object this model exposes."""
 
@@ -131,7 +130,7 @@ class SettingDefinitionsModel(QAbstractListModel):
             self._root_key = key
 
             if self._container:
-                definitions = self._container.findDefinitions(key = key)
+                definitions = self._container.findDefinitions(key=key)
                 if not definitions:
                     Logger.log("w", "Tried to set root of SettingDefinitionsModel to an unknown definition")
                     return
@@ -144,7 +143,7 @@ class SettingDefinitionsModel(QAbstractListModel):
     rootKeyChanged = pyqtSignal()
     """Emitted when the rootKey property changes."""
 
-    @pyqtProperty(str, fset = setRootKey, notify = rootKeyChanged)
+    @pyqtProperty(str, fset=setRootKey, notify=rootKeyChanged)
     def rootKey(self) -> str:
         """The SettingDefinition to use as root for the list."""
 
@@ -161,7 +160,7 @@ class SettingDefinitionsModel(QAbstractListModel):
     showAllChanged = pyqtSignal()
     """Emitted when the showAll property changes."""
 
-    @pyqtProperty(bool, fset = setShowAll, notify = showAllChanged)
+    @pyqtProperty(bool, fset=setShowAll, notify=showAllChanged)
     def showAll(self) -> bool:
         """Whether or not the model should show all definitions regardless of visibility."""
 
@@ -188,7 +187,8 @@ class SettingDefinitionsModel(QAbstractListModel):
 
     visibilityHandlerChanged = pyqtSignal()
     """Emitted whenever the visibilityHandler property changes"""
-    @pyqtProperty("QVariant", fset = setVisibilityHandler, notify = visibilityHandlerChanged)
+
+    @pyqtProperty("QVariant", fset=setVisibilityHandler, notify=visibilityHandlerChanged)
     def visibilityHandler(self):
         """An instance of SettingVisibilityHandler to use to determine which settings should be visible."""
 
@@ -206,7 +206,7 @@ class SettingDefinitionsModel(QAbstractListModel):
     excludeChanged = pyqtSignal()
     """Emitted whenever the exclude property changes"""
 
-    @pyqtProperty("QVariantList", fset = setExclude, notify = excludeChanged)
+    @pyqtProperty("QVariantList", fset=setExclude, notify=excludeChanged)
     def exclude(self):
         """This property indicates which settings should never be visibile."""
 
@@ -239,14 +239,15 @@ class SettingDefinitionsModel(QAbstractListModel):
     expandedChanged = pyqtSignal()
     """Emitted whenever the expanded property changes"""
 
-    @pyqtProperty("QStringList", fset = setExpanded, notify = expandedChanged)
+    @pyqtProperty("QStringList", fset=setExpanded, notify=expandedChanged)
     def expanded(self) -> List[str]:
         """This property indicates which settings should never be visibile."""
+
         return list(self._expanded)
 
     visibleCountChanged = pyqtSignal()
 
-    @pyqtProperty(int, notify = visibleCountChanged)
+    @pyqtProperty(int, notify=visibleCountChanged)
     def visibleCount(self) -> int:
         count = 0
         for index in self._row_index_list:
@@ -256,7 +257,7 @@ class SettingDefinitionsModel(QAbstractListModel):
 
         return count
 
-    @pyqtProperty(int, notify = visibleCountChanged)
+    @pyqtProperty(int, notify=visibleCountChanged)
     def categoryCount(self) -> int:
         count = 0
         for index in self._row_index_list:
@@ -296,7 +297,7 @@ class SettingDefinitionsModel(QAbstractListModel):
         if not self._container:
             return []
 
-        return self._container.findDefinitions(key = key)
+        return self._container.findDefinitions(key=key)
 
     def _expandRecursive(self, key: str) -> Set[str]:
         definitions = self._getDefinitionsByKey(key)
@@ -310,7 +311,7 @@ class SettingDefinitionsModel(QAbstractListModel):
         return expanded_settings
 
     @pyqtSlot(str)
-    def expandRecursive(self, key: str, *, emit_signal: bool = True ) -> None:
+    def expandRecursive(self, key: str, *, emit_signal: bool = True) -> None:
         """
         Show the children of a specified SettingDefinition and all children of those settings as well.
 
@@ -326,13 +327,13 @@ class SettingDefinitionsModel(QAbstractListModel):
         self._expanded.add(key)
 
         for child in definitions[0].children:
-            self.expandRecursive(child.key, emit_signal = False)
+            self.expandRecursive(child.key, emit_signal=False)
 
         if emit_signal:
             self.expandedChanged.emit()
             self._scheduleUpdateVisibleRows()
 
-    #@deprecated("Use collapseRecursive instead.", "4.5")  # Commented out because these two decorators don't work together.
+    # @deprecated("Use collapseRecursive instead.", "4.5")  # Commented out because these two decorators don't work together.
     @pyqtSlot(str)
     def collapse(self, key: str) -> None:
         return self.collapseRecursive(key)
@@ -357,7 +358,7 @@ class SettingDefinitionsModel(QAbstractListModel):
         self._expanded.remove(key)
 
         for child in definitions[0].children:
-            self.collapseRecursive(child.key, emit_signal = False)
+            self.collapseRecursive(child.key, emit_signal=False)
 
         if emit_signal:
             self.expandedChanged.emit()
@@ -433,13 +434,13 @@ class SettingDefinitionsModel(QAbstractListModel):
         if self._visibility_handler:
             self._visibility_handler.setVisible(self._visible)
 
-    @pyqtSlot(str, result = bool)
+    @pyqtSlot(str, result=bool)
     def getVisible(self, key: str) -> bool:
         """Get a single SettingDefinition's visible state"""
 
         return key in self._visible
 
-    @pyqtSlot(str, result = int)
+    @pyqtSlot(str, result=int)
     def getIndex(self, key: str) -> int:
         definitions = self._getDefinitionsByKey(key)
         if not definitions:
@@ -457,7 +458,7 @@ class SettingDefinitionsModel(QAbstractListModel):
         except ValueError:
             return -1
 
-    @pyqtSlot(str, str, result = "QVariantList")
+    @pyqtSlot(str, str, result="QVariantList")
     def getRequires(self, key: str, role: str = None) -> List[Dict[str, Any]]:
         definitions = self._getDefinitionsByKey(key)
         if not definitions:
@@ -475,11 +476,11 @@ class SettingDefinitionsModel(QAbstractListModel):
             if self._i18n_catalog:
                 label = self._i18n_catalog.i18nc(relation.target.key + " label", label)
 
-            result.append({ "key": relation.target.key, "label": label})
+            result.append({"key": relation.target.key, "label": label})
 
         return result
 
-    @pyqtSlot(str, str, result = "QVariantList")
+    @pyqtSlot(str, str, result="QVariantList")
     def getRequiredBy(self, key: str, role: str = None) -> List[Dict[str, Any]]:
         definitions = self._getDefinitionsByKey(key)
         if not definitions:
@@ -497,7 +498,7 @@ class SettingDefinitionsModel(QAbstractListModel):
             if self._i18n_catalog:
                 label = self._i18n_catalog.i18nc(relation.target.key + " label", label)
 
-            result.append({ "key": relation.target.key, "label": label})
+            result.append({"key": relation.target.key, "label": label})
 
         return result
 
@@ -505,7 +506,7 @@ class SettingDefinitionsModel(QAbstractListModel):
     """Reimplemented from ListModel only because we want to use it in static
     context in the subclass."""
 
-    @pyqtProperty(int, notify = itemsChanged)
+    @pyqtProperty(int, notify=itemsChanged)
     def count(self) -> int:
         """Reimplemented from QAbstractListModel
 
@@ -520,8 +521,8 @@ class SettingDefinitionsModel(QAbstractListModel):
 
         return len(self._row_index_list)
 
-    @pyqtSlot(QObject, result = int)
-    def rowCount(self, parent = None) -> int:
+    @pyqtSlot(QObject, result=int)
+    def rowCount(self, parent=None) -> int:
         """This function is necessary because it is abstract in QAbstractListModel.
 
         Under the hood, Qt will call this function when it needs to know how many items are in the model.
@@ -581,13 +582,6 @@ class SettingDefinitionsModel(QAbstractListModel):
         """Reimplemented from QAbstractListModel"""
 
         return self._role_names
-
-    def _onExpandedChanged(self) -> None:
-        # required to show settings/categories are expanded or collapsed
-        for row in range(len(self._row_index_list)):
-            definition = self._definition_list[self._row_index_list[row]]
-            if definition.type == "category":
-                self.dataChanged.emit(self.index(row, 0), self.index(row, 0), [self.ExpandedRole])
 
     def _onVisibilityChanged(self) -> None:
         if self._visibility_handler:
@@ -670,9 +664,9 @@ class SettingDefinitionsModel(QAbstractListModel):
         # Reset the scheduled flag
         self._update_visible_row_scheduled = False
 
-        currently_visible = set(self._row_index_list) # A set of currently visible items
+        currently_visible = set(self._row_index_list)  # A set of currently visible items
 
-        new_visible = set() # A new set of visible items
+        new_visible = set()  # A new set of visible items
         for index in range(len(self._definition_list)):
             if self._isDefinitionVisible(self._definition_list[index]):
                 new_visible.add(index)
@@ -762,9 +756,15 @@ class SettingDefinitionsModel(QAbstractListModel):
             if self._filter_dict and not child.matchesFilter(**filter):
                 continue
 
+            enabled = self._container.getProperty(child.key, "enabled")
+            if isinstance(enabled, SettingFunction):
+                enabled = enabled(self._container)
+
+            if not enabled:
+                continue
+                
             if child.key in self._visible:
-                if self._container.getProperty(child.key, "enabled"):
-                    return True
+                return True
 
             if self._isAnyDescendantVisible(child):
                 return True
